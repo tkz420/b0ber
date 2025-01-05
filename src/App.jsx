@@ -56,9 +56,9 @@ import React, { useState, useEffect } from 'react';
               >
                 <span className="item-id">{item.id}</span>
                 {item.link.match(/\.(jpeg|jpg|gif|png)$/) ? (
-                  <img src={item.link} alt={`Item ${item.id}`}  />
+                  <img src={item.link} alt={`Item ${item.id}`} />
                 ) : (
-                  <video src={item.link}  />
+                  <video src={item.link} />
                 )}
               </div>
             ))}
@@ -106,7 +106,7 @@ import React, { useState, useEffect } from 'react';
               {item.link.match(/\.(jpeg|jpg|gif|png)$/) ? (
                 <img src={item.link} alt={`Item ${item.id}`} />
               ) : (
-                <video src={item.link} controls  />
+                <video src={item.link} controls />
               )}
             </div>
             <div className="detail-page-nav">
