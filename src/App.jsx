@@ -111,6 +111,17 @@ import React, { useState, useEffect } from 'react';
         return date.toLocaleString();
       };
 
+      const handleDownload = () => {
+        if (item && item.link) {
+          const link = document.createElement('a');
+          link.href = item.link;
+          link.download = item.link.substring(item.link.lastIndexOf('/') + 1);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      };
+
       if (!item) {
         return (
           <div className="detail-page">
@@ -138,7 +149,7 @@ import React, { useState, useEffect } from 'react';
               <div>{item.id}</div>
               <div>{item.uploader}</div>
               <div>{formatTime(item.uploadTime)}</div>
-              <div>&gt;tfw</div>
+              <div className="download-button" onClick={handleDownload}>Download</div>
             </div>
           </div>
         </div>
