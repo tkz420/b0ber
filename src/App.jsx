@@ -42,19 +42,20 @@ import React, { useState, useEffect } from 'react';
           }));
 
           const jsonData = JSON.stringify(mediaData, null, 2);
-          const blob = new Blob([jsonData], { type: 'application/json' });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = 'media.json';
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
+
+          // Use the fetch API to write the file
+          await fetch('/media.json', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonData,
+          });
         } catch (e) {
           console.error("Error saving media to JSON:", e);
         }
       };
+
 
       const addItem = () => {
         if (newLink.trim() !== '') {
