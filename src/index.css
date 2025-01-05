@@ -1,7 +1,7 @@
 body {
       font-family: sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 0;
       background-color: #1a1a1a;
       color: #fff;
     }
@@ -44,6 +44,7 @@ body {
       margin-bottom: 20px;
       display: flex;
       gap: 10px;
+      padding: 10px;
     }
 
     .add-item-form input {
@@ -95,7 +96,6 @@ body {
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      max-height: 70vh;
     }
 
     .detail-page-nav {
@@ -125,6 +125,22 @@ body {
       background-color: #333;
       padding: 10px;
       text-align: center;
+    }
+
+    .id-navigation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding: 10px;
+      justify-content: center;
+    }
+
+    .id-navigation button {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
     }
 
     @media (max-width: 600px) {
