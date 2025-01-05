@@ -5,20 +5,56 @@ import React, { useState, useEffect } from 'react';
 
     function Gallery() {
       const [items, setItems] = useState(() => {
-        const storedItems = localStorage.getItem('galleryItems');
-        return storedItems ? JSON.parse(storedItems) : [];
+        try {
+          const storedItems = localStorage.getItem('galleryItems');
+          return storedItems ? JSON.parse(storedItems) : [];
+        } catch (e) {
+          console.error("Error parsing stored items:", e);
+          return [];
+        }
       });
       const [nextId, setNextId] = useState(() => {
-        const storedItems = localStorage.getItem('galleryItems');
-        const parsedItems = storedItems ? JSON.parse(storedItems) : [];
-        return parsedItems.length > 0 ? Math.max(...parsedItems.map(item => item.id)) + 1 : 1;
+        try {
+          const storedItems = localStorage.getItem('galleryItems');
+          const parsedItems = storedItems ? JSON.parse(storedItems) : [];
+          return parsedItems.length > 0 ? Math.max(...parsedItems.map(item => item.id)) + 1 : 1;
+        } catch (e) {
+          console.error("Error parsing stored items for nextId:", e);
+          return 1;
+        }
       });
       const [newLink, setNewLink] = useState('');
       const navigate = useNavigate();
 
       useEffect(() => {
         localStorage.setItem('galleryItems', JSON.stringify(items));
+        saveMediaToJson(items);
       }, [items]);
+
+      const saveMediaToJson = async (items) => {
+        try {
+          const mediaData = items.map(item => ({
+            id: item.id,
+            type: item.link.match(/\.(jpeg|jpg|gif|png)$/) ? 'image' : 'video',
+            uploadTime: item.uploadTime,
+            uploadUser: 'anonymous',
+            directLinkUrl: item.link,
+          }));
+
+          const jsonData = JSON.stringify(mediaData, null, 2);
+          const blob = new Blob([jsonData], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'media.json';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        } catch (e) {
+          console.error("Error saving media to JSON:", e);
+        }
+      };
 
       const addItem = () => {
         if (newLink.trim() !== '') {
@@ -74,17 +110,26 @@ import React, { useState, useEffect } from 'react';
       const navigate = useNavigate();
       const [item, setItem] = useState(null);
       const [items, setItems] = useState(() => {
-        const storedItems = localStorage.getItem('galleryItems');
-        return storedItems ? JSON.parse(storedItems) : [];
+        try {
+          const storedItems = localStorage.getItem('galleryItems');
+          return storedItems ? JSON.parse(storedItems) : [];
+        } catch (e) {
+          console.error("Error parsing stored items in DetailPage:", e);
+          return [];
+        }
       });
 
       useEffect(() => {
-        const storedItems = localStorage.getItem('galleryItems');
-        if (storedItems) {
-          const items = JSON.parse(storedItems);
-          setItems(items);
-          const foundItem = items.find((item) => item.id === parseInt(id));
-          setItem(foundItem);
+        try {
+          const storedItems = localStorage.getItem('galleryItems');
+          if (storedItems) {
+            const items = JSON.parse(storedItems);
+            setItems(items);
+            const foundItem = items.find((item) => item.id === parseInt(id));
+            setItem(foundItem);
+          }
+        } catch (e) {
+          console.error("Error fetching item details:", e);
         }
       }, [id]);
 
@@ -160,8 +205,13 @@ import React, { useState, useEffect } from 'react';
       const navigate = useNavigate();
       const location = useLocation();
       const [items, setItems] = useState(() => {
-        const storedItems = localStorage.getItem('galleryItems');
-        return storedItems ? JSON.parse(storedItems) : [];
+        try {
+          const storedItems = localStorage.getItem('galleryItems');
+          return storedItems ? JSON.parse(storedItems) : [];
+        } catch (e) {
+          console.error("Error parsing stored items in App:", e);
+          return [];
+        }
       });
 
       const handleLogoClick = () => {
